@@ -1,0 +1,10 @@
+
+Tutorial 5c 
+
+Santina Lin (87325149)
+
+PCA component analysis allow us to capture data with less components. In the tutorials' example, we looked at standard deviations for each variable and select the first 4 variables, which have the highest standard deviation, based on eye-balling the screeplot graph. We essentially took the the four variables that have the highest variability. In this example, it's the first four. In other dataset, we might need to reorder the variables based on the standard deviations in order to create such a nice curve. 
+
+So the prediction made by the neural net with all fourteen components and the one made with only the first components are very different. The former only has about ~ 36% accuracy (this number varies depending on dividual, but generally the class has low accuracy for the first model).  Whereas the latter achieved >80% accuracy. This indicates that some variables contribute to noise that can affect prediction accuracy, and that having all predictors are often detrimental to a prediction model. So PCA allows us to pick out the predictors that are truly relevant, and increase the accuracy of the neural net model. 
+
+Another thing to look into is the running time, as returned by system.time. The first time I run it, the first model, built on all attributes, actually takes less time to be constructed than the second model. To truly measure the time it takes to build a neural net, one would have to run the same commands a few times. Another variable that can have an affect on this is the number of hidden nodes. Although, when I change 10 to 20, the running time and accuracy doesn't change much for the second model. We're still not sure how increasing/decreasing the number of hidden nodes can have an affect on the accuracy and running time. This is something to be tested out (or asked on the discussion board)

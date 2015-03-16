@@ -1,0 +1,5 @@
+
+
+In model1, only GRE and GPA values are used as features to predict whether a person is admitted or not (in which the threshold probability is selected based on the intersection of sensitivty and specificty curves).  Whereas in model 2, GRE, GPA, and rank (a catagorical feature) are used. 
+
+In model 1, the accuracy ((TP + TN)/total) is 64%, whereas in Model2 it is 66%. This means that by including rank in our predictors, we increase the accuracy of the model by 2%. Though it is small, looking at the P values in the summary we can see that rank does play an important role; all three categories in rank have P values less than 0.01. Also, by looking at the P value and the coefficients of GPA in both models, we can see that GPA may play a major role in determining the admission, but it is not strongly correlated with whether a person gets admitted or not. 

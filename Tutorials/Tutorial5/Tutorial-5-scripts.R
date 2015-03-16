@@ -1,0 +1,106 @@
+
+# Tutorial 5c, Oct 27 Monday. Santina Lin 
+# below codes are from the connect website. I have added a lot of comments as notes 
+
+set.seed(1) # though people seem to get different results 
+
+# require to load those two first 
+library("grid")
+library("MASS")
+
+# download if you don't have it 
+library("neuralnet")
+
+wine <- read.table("http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data",sep=",")
+#wine <- read.table("wine.data",head=TRUE,sep=",")
+head(wine) # there are 14 variables 
+
+# gonna try to predict what kind fo wines we have. V1 is type of wine
+
+#randomize order of rows
+wine = wine[sample(nrow(wine)),]  # now the order of the rows are randomized 
+wine_train = wine[1:100,]
+wine_test = wine[101:178,]
+
+# train a neuralnet model based on all features, calculate time in the meantime 
+# system.time command time how long this will take
+# can try changing hidden node number to see performance : 
+# perhaps roughly similar to number of variables. TA isn't sure, put on discussion board 
+system.time(modelnn <- neuralnet(
+  V1 ~ V2 + V3 + V4 + V5 + V6 + V7 + V8 + V9 + V10 +
+    V11 + V12 + V13 + V14, wine_train, hidden = 10, algorithm='rprop+',learningrate=0.01,rep=1))
+
+# get the test set in the format that neuralnet compute accepts
+# why only from V2 to V13? what happened to V14? error, fixed 
+temp_test <- subset(wine_test,select = 
+                      c("V2","V3","V4","V5","V6","V7","V8","V9","V10","V11","V12","V13", "V14"))
+
+# calculate accuracy (true) --> compute is a fucntion that predict in neuralnet library
+# compute : false : 0.65, TRUE: 0.346.... which is different from the TA's result 
+prop.table(table(wine_test$V1 == round((compute(modelnn, temp_test))$net.result)))
+
+# ============part 2 : PCA ================================ 
+# PCA: way to understand data better " 
+
+library("prcomp")
+
+# first scale the data 
+wine_train_scaled <- as.data.frame(scale(wine_train[2:14]))
+wine_test_scaled <- as.data.frame(scale(wine_test[2:14]))
+
+# do PCA on scaled data 
+wine_train_PCA <- prcomp(wine_train_scaled)
+wine_test_PCA <- prcomp(wine_test_scaled)
+
+# the feature values after PCA run
+head(wine_train_PCA$x)
+
+#standard deviations: gives more information, greatest variability is the first PC 
+sapply(wine_train[2:14],sd) # for each attribute,before scaling  
+sapply(wine_train_scaled,sd)
+wine_train_PCA$sdev
+
+# Plot in order to decide how many Principal Components to retain
+screeplot(wine_train_PCA, type="lines")
+# The most obvious change in slope in the scree plot occurs at component 4, 
+# which is the “elbow” of the scree plot. Therefore, 
+# it cound be argued based on the basis of the scree plot that the 
+# first three components should be retained.
+
+#prepare data for training and test
+# train just with the first 4 components cuz they have high standard deviations 
+# you can perhaps play with the number of hidden nodes and/or do iterations to see computational time.
+wine_train_pca4 <- data.frame(V1 = wine_train[, "V1"], wine_train_PCA$x)
+wine_test_pca4 <- subset(wine_test_PCA$x,select = c("PC1","PC2","PC3","PC4"))
+# train model and record the time
+system.time(modelnn.pca <- neuralnet(V1 ~ PC1 + PC2 + PC3 + PC4 , 
+                                     wine_train.pca, hidden = 10, 
+                                     algorithm='rprop+',learningrate=0.01,rep=1))
+# higher computational time... why? Cuz PCA takes longer in general? 
+#    answer: TA says neural net can take various time periods 
+
+prop.table(table(wine_test$V1 == round((compute(modelnn.pca, wine_test.pca))$net.result)))
+# wow, true is 0.88% 
+
+# ==================bonus from the TA (written by Jason), not copied correctly need to be fixed====
+# this part test how neural net generate different results each time 
+
+correct  <- rep(0,20)
+nam  <- c()
+for(i in 1:20){
+  set.seed(i)
+  wine <- wine[sample(nrow(wine),]
+  wine_train  <- wine[1:100,]
+  wine_test  <- wine[1:100,]
+  modelnn  <- neuralnet(V1 ~ V2 + V3 + V4 ) #fix this by including more variables 
+  
+  temp_test  <- subset(wine_test, select = c('V2', "V3", "V4")) # same here 
+  
+  a <- prop.table((compute(modelnn, temp_test)))
+  correct[i]  <- a[2] # get the true % 
+ #  nam  <- c(nam, names(a)[2]) # check R isn't flipping the value... not sure what this mean 
+}
+
+# code not working, will fix later 
+
+# if run 100 times neural net with PCA takes less time?  - said by Sarah 

@@ -1,0 +1,12 @@
+
+
+Santina Lin 87325149 
+Novemeber 3, Monday 
+Tutorial 6c 
+
+Our SVM performs perfectly well when we use linear model in SVM. SVM has 100% accuracy with 'kernel = "linear"' and Naive Bayes has 96% accuracy. When we use 'kernel = "polynomial' for SVM, however, the accuracy was bad; in fact, all data was classified to be class 1.  It's most likely because polynomial model can overfit the training data, and then perform badly on the testing data.  
+
+Strangely, changing the degree for type polynimal in svm to 1 still generates the same result as the default parameter 'degree = 3'. So setting the kernal to 'polynomial' makes svm behave differently from that with kernel set to 'linear'. 
+
+From reading the svm documentation ('?svm') there is a extra gamma variable that is not present in the linear equation. Therefore, polynomial method does follow a different fomula than the linear model. 
+

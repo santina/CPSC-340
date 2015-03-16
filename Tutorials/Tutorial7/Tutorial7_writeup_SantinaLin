@@ -1,0 +1,10 @@
+November 10, 2014 Tutorial 7c 
+Santina Ln 87325149 
+
+The errors change depending on how much we weight on each prediction methods when we do Ensemble. For example, when combining linear regression and SVM together, the error decrease as we weight SVM higher (90%) than the linear regression (10%). 
+
+The prediction of a single decision tree has more error than the random forest, which is more accurate (for this datase at least) because it makes multiple models to do prediction and then generate result based on how all the models perform. That said, random forest is a ensemble itself. We can also combine the prediction of random forest with SVM or with linear regression. When I combine random forest and SVM togehter and weight them equally, I get the smallest error compared to all the other prediction I made with different methods. The value of the error is smaller than both that of SVM and random forest. 
+
+When I combine random forest and linear regression, the error was pretty big. 
+
+Therefore, random forest and svm perform well in general and can produce better result when they are combined in ensemble (at least for this dataset )

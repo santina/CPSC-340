@@ -1,0 +1,16 @@
+{
+    "contents" : "# Tutorial 6c , Nov 3 Monday\n# Santina Lin 87325149 \n\nset.seed(1)\nlibrary(SnowballC)\nlibrary(e1071)\nlibrary(tm)\n\n# setwd(\"/Users/yashar/ML-R-CS340\")\ntrain<- read.table(\"epinions-train.csv\", sep = \",\", header = TRUE)\ntest<- read.table(\"epinions-test.csv\", sep = \",\", header = TRUE)\n\ntrain_set <- train[sample(nrow(train), 200),]\ntest_set <- test[sample(nrow(test), 100),]\n\ntrain_test_set <- rbind(train_set,test_set) \n\n# Preprocessing\ntrain_test_corpus <- Corpus(VectorSource(train_test_set$text))\ntrain_test_corpus <- tm_map(train_test_corpus, content_transformer(tolower))\ntrain_test_corpus <- tm_map(train_test_corpus, content_transformer(removePunctuation))\ntrain_test_corpus <-  tm_map(train_test_corpus, content_transformer(removeWords) , c(stopwords('english')))\ntrain_test_corpus <- tm_map(train_test_corpus, stripWhitespace)\nDTM_train_test <- DocumentTermMatrix(train_test_corpus,control=list(stemming = TRUE,weighting = weightTfIdf))\ntrain_test_dataframe <- as.data.frame(inspect( DTM_train_test ))\n\t# there's a lot of zeros. TA says it'd affect SVM \n\nclasses <- c(train_test_set$class)\ntrain_df_withoutclass <- head (train_test_dataframe,200)\ntest_df_withoutclass <- tail (train_test_dataframe,100)\ntrain_classes <- factor(head (classes,200))\ntest_classes <- factor(tail(classes,100))\n\n\n\nNB <- naiveBayes(train_df_withoutclass,train_classes,laplace = 1)\n\t# laplace: if a given attribute has a prob of 0, it won't affect naiveBayes (smoothen something)\nPredictionNB <- predict(NB,test_df_withoutclass)\ntable(PredictionNB,test_classes)\n# PredictionNB  1  2\n#            1 50  3\n#            2  1 46\ntest_classes\nprop.table(table(test_classes==PredictionNB)) \n#FALSE  TRUE \n# 0.04  0.96 \n\n\n#' SVM \n#' how it works: think of a graph with a bunch of dots representing data points\n#' draw a line/plane which maximize distance between the surface and the two groups \n\n\nSVM <- svm(train_df_withoutclass,train_classes,kernel=\"polynomial\", degree = 3)\n\t# gives a bunch of warning, because it's sensitive to outliner? \nsummary(SVM)\nPredictionSVM <- predict(SVM,test_df_withoutclass)\ntable(PredictionSVM,test_classes)\n#\t\t\t\t\ttest_classes\n# PredictionSVM  1  2\n# \t\t\t\t\t\t1 51  0\n# \t\t\t\t\t\t2  0 49\n\nprop.table(table(test_classes==PredictionSVM)) # 100% true\nsummary(SVM)\n\n#try:\n#kernel=\"polynomial\"\n#degree =3,5\n\n# kernel = \"polynomial\", degree = 3 \n# \t\t\t\ttest_classes\n# PredictionSVM  1  2\n# \t\t\t\t\t\t1 51 49\n#\t\t\t\t\t\t\t2  0  0\n\n# kernel = \"polynomial\", degree = 5  \n#\t\t\t\t\ttest_classes\n#PredictionSVM  1  2\n#\t\t\t\t\t\t\t1 51 49\n# \t\t\t\t\t\t2  0  0\n\n\n",
+    "created" : 1425522314751.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3660197611",
+    "id" : "BEA5FF2C",
+    "lastKnownWriteTime" : 1415061377,
+    "path" : "C:/Users/Santina Lin/SkyDrive/CPSC340/Tutorials/Tutorial6/Tutorial-6-scripts.R",
+    "project_path" : "Tutorials/Tutorial6/Tutorial-6-scripts.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

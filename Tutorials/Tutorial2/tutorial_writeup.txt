@@ -1,0 +1,37 @@
+Student: Santina Lin 
+ID: 87325149
+
+Tutorial 2: Classification comparison  - Sept 29, 2014 Monday 4pm 
+
+In class we did a few classifications methods such as : 
+
+1. using 'class' method to classify based on different (set of) terms
+  a. "also"  as a vague classification term 
+  b. (all terms) to build model on all terms 
+  c. ' camera + car ' as a way to give clear way to classify documents 
+
+In 1a, the documents were split in which 27 documents belong to the camera group were split into two groups with 19 and 8 documents inside them. The documents belong to the car group were split into two separate group, with 17 and 6 documents respectively. It is to demonstrate a bad classification. 
+
+In 1b, the documents were correctly divided into 27 documents in group 1 (camera) and 23 in group 2 (cars)
+
+In 1c, the result was the same as 1b. It was expected that the two key words would give rise to better classification result than a random term like in 1a. 
+
+2. Using poisson and anova to run the test 
+
+When using either all terms or combination of "camera" and "car", the both classification methods gave rise to correct classification results. 
+
+When using a random term such as "also", both methods mistakenly put 8 camera documents into another class and 6 car documents into a different one as well. Both with about the same degree of uncertainty (see below)
+
+POISSON, classify with "also"
+
+    1.44330484330484 1.59759299781182
+  1               19                8
+  2               17                6
+
+ANOVA
+
+    1.44285714285714 1.6
+  1               19   8
+  2               17   6
+
+I think it's interesting that both methods has intermediate values for the categories (1 and 2) they classify the documents into. That give a bit more extra information than the "class" method. Overall, I learn that all methods perform with about the same accuracy when the model is trained on important key words.

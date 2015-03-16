@@ -1,0 +1,16 @@
+{
+    "contents" : "set.seed(1)\nlibrary(tm)\nlibrary(topicmodels) #for fitting topic models \nlibrary(modeltools) # \n\nall_data<-read.table(\"recipes.csv\",sep = \",\",header=TRUE)\nall_data = all_data[sample(nrow(all_data)),] \ndata = all_data[1:10000,]\ndata[1,]\n#' TA's quick tutorial on LDA and topic modeling \n#' Topic modeling:\n#' \t when start with a collection of documents, it assume there's a true collection\n#' \t of topics (ex: topic1: cats {\"meow, \"litter\" } and topic2: dogs{\"fetch\"})\n#' \t but some documents can have multiple topics. (can have a list of topics covered \n#' \t by it) \n#' \t assume a true prob distribution for all k topics, choice of k is important\n#' \t assume eah topic has a true prob distribution of words covered by that topic \n#' \t kinda like k clustering but we're not sorting the document,\n#' \t but instead pulling topics out of the documents \n#' a topic in Latent Dirichlet Allocation (LDA), I think... \n\n\ncorpus = Corpus(VectorSource(data$Ingredients))\ndtm = DocumentTermMatrix(corpus)\n\ndict = findFreqTerms(dtm,10) # filter out those that don't appear at least 10 times..\ndtm.filtered = DocumentTermMatrix(corpus, list(dictionary = dict))\n\nrecipes.m = as.matrix(  dtm.filtered )\n\npopularity = sort(colSums(recipes.m), decreasing=TRUE)\npopularity = data.frame(ingredients = names(popularity), num_recipes=popularity)\npopularity$ingredients = reorder(popularity$ingredients, popularity$num_recipes)\n\nlibrary(ggplot2)\n\nggplot(popularity[1:25,], aes(x=ingredients, y=num_recipes)) + \n  geom_point(size=5, colour=\"red\") + coord_flip() + \n  ggtitle(\"Recipe Popularity of Top 25 Ingredients\") + \n  theme(axis.text.x=element_text(size=13,face=\"bold\", colour=\"black\"), \n  axis.text.y=element_text(size=13,colour=\"black\",\n  face=\"bold\"), axis.title.x=element_text(size=14, face=\"bold\"), \n  axis.title.y=element_text(size=14,face=\"bold\"),\n  plot.title=element_text(size=24,face=\"bold\"))\n\n# we see that eggs wheat and butter are very frequent, almost like stop words \n# so we'll remove them \ncorpus = tm_map(corpus, removeWords, c(\"wheat\",\"egg\",\"butter\"))\n# you can also try removing top 5 or whatever, and see how the result differs \n\ndtm.final = DocumentTermMatrix(corpus, control = list(dictionary = dict))\nrowTotals <- apply(dtm.final , 1, sum) \ndtm.new   <- dtm.final[rowTotals> 0, ] # remove things that have no ingredients \n\nlda = LDA(dtm.new, 20) # choose 20 topics (arbitrarily guess 20)\nt = terms(lda,5)\nt\n\nlda_10 = LDA(dtm.new, 10) # choose 10 topics (arbitrarily guess 20)\nt_10 = terms(lda,5)\nt_10\n\n",
+    "created" : 1425522285319.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1340461483",
+    "id" : "B0723B84",
+    "lastKnownWriteTime" : 1416270706,
+    "path" : "C:/Users/Santina Lin/SkyDrive/CPSC340/Tutorials/Tutorial8/Tutorial-8-scripts_Santina.R",
+    "project_path" : "Tutorials/Tutorial8/Tutorial-8-scripts_Santina.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

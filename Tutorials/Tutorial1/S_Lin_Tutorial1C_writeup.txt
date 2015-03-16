@@ -1,0 +1,20 @@
+
+CPSC340 
+Tutorial session C 
+
+Name: Santina Sheng-Ting Lin
+ID: 87325149
+
+It's hard to identify what would be the right number of clusters, given that K clusters are
+formed randomly based on randomy selection of seeds. The results thus differ each time
+you run a k clustering analysis on a data set. In the case of a very clear split 
+of data into different sets, the best results can be clear after running ita few times and 
+testing different number of seeds. However, in the case of a data set in which the divisions
+aren't clear cut, it's hard to find the most optimal solution even after running a few times.
+
+Generally speaking, a good k-mean clustering can divide a data set into k groups such that 
+the variance within each group is small. Ignore the fact that the seeds are random
+as we increase k, the variance should decrease until the level of decreases become smaller,
+meaning that the algorithm has divide the data set into a good number of groups. 
+However, the variance converges to zero as we incease k (until k = number of data points 
+in the set) so we need to be careful with the k we choose. 

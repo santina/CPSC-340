@@ -1,0 +1,9 @@
+
+Santina Lin 87325149 
+Tutorial 8c, Nov 17 Monday
+
+Activity: making a LDA model based on the corpus made from a bunch of recipes, and then generate 20 topics using lda function by text processing the corpus. 
+
+Judging the quality of the topic model is a little subjective. But in general, we can see if they make sense by looking at if the ingredients are related. After all, if the quality of the model is good, recipes that make the similar type of things  (judging from the ingredients that are involved) would lead to the same topic. 
+
+With k = 20 (numbers of topic equal to 20), we see that there are some topics that make sense or a little odd. For example, I can't really dream up a dish that use milk and onion, haha. With k =10, there's a topic with garlic and cocoa in it. However, in k = 20 most of the topics seem fine. Overall, the quality, as measured by qualitative views, would change depending on the number of topics we want as well as the removal of the "stop words" (top 3 most frequent ingredients versus top 2 or top 5). 

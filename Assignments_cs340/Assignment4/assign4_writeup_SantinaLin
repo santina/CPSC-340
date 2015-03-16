@@ -1,0 +1,30 @@
+
+Santina Lin 87325149
+CS340 Assignment4 (the last one!)
+
+For me, the values for sensitivity and specificity are fairly similar, with only minute differences, in part 1 and part 2. 
+
+Part 1: 
+sensitivity: 0.3355499
+specificity: 0.9445939
+As we can see the model doesn't pick out the positive class (file related to comp sci) as well as excluding those that are not compsci related. This might be due to the fact that the document term matrix I made has 76% sparsity, using only 50 terms. I did that to reduce the time it takes to build the SVM model. However, this might have resulted in more terms in the non-compsci files being used, since there are a larger number of them than that of compsci after all. 
+
+Part2: 
+sensitivity: 0.3459415
+specificity: 0.9446077
+
+Cross validation basically has the benefit or having more data to test a model. All the data are being used in training and in testing, without violating the rule that testing and training data must be disjoint. So in theory it performs better than just using a training set and a test set because we have more data to train and test. Here we see that it performs "slightly" better, as indicated by both sensitivity and specificity. Again, I think the improvement would have been more obvious (if there's supposed be an improvement) if I use more terms in the document term matrix. 
+
+
+Extra: 
+
+To validate my claim, I reran the code with less sparse words removed (now with 120 words). In part one I found that: 
+Specificity: 0.9315044
+Sensitivity: 0.4736573
+accuracy: 83% 
+
+and in part 2: 
+Specificity: 0.9330706
+sensitivity: 0.4745451
+
+So indeed, with more words in the term document matrix, the accuracy increase as well as the overall performance, as measured by specifiity and sensitivity, also improved. That said, I think it's because compsci documents are less, the sensitivity is lower than specificity because most of those terms come from the non-compsci documents. 

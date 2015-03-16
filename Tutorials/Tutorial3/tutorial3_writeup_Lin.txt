@@ -1,0 +1,31 @@
+Student: Santina Lin 
+ID: 87325149
+
+Tutorial 3: Linear regression - Oct 6, 2014 Monday 4pm 
+
+In this tutorial, we built a linear model using a training data set and examined how good it fits with a testing data set. The work flow was: 
+
+1. Build a linear model on training data set
+2. examine the linear equation 
+3. look at residuals of the models (hist(resid(model))) 
+4. Use the model to make a prediction (predict()) 
+5. compare actual values with the predicted value side by side 
+6. scale the data 
+7. check to see if linear model fits better 
+	- by looking at the values side by side 
+	- look at sum of residuals 
+
+The first fitted model was price based on variables "area" and "bedrooms", denoted as P, A, and B, respectively : 
+
+P = 136.9A - 14085B + 108413  
+Sum of residuals is : 51688.15 
+
+The second fitted model, after the variables (area and bedroom) have been scaled such that new_value = (old_value - mean) / SD of the variable, became this: 
+
+P = 114289A - 11079B + 342997 
+Sum of residuals is : 39722.82 
+
+As we can see that, the variable A (area) is weighted a lot more in the second one, fitted on a scaled data set, than the first one. The second model which was built on a scaled training data also has a smaller residuals, suggesting better fitting linear regression model 
+
+I believe it's because in the original data, area is a larger number (1000+) and bedroom is a smaller number (1, 2, 3). So scaling the number will make them more representative and address the problem of different units. Now we can see that total area is a more deterministic factor for the housing price. 
+
